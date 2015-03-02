@@ -121,12 +121,14 @@ _weather_script = [] execVM "dialog\startup\weather.sqf";
 // CALL ZONES GENERATION
 waitUntil {!isNil {getsize_script}};  // WAIT UNTIL THE MAPSIZE SCRIPT IS DONE
 
+    if (!zones_created && !manually_chosen) then {      // CHECK IF ZONES ARE PLACED, IF NOT EXECUTE locatorZonesV1.sqf
+        _zones_create = [50, 0.2] execVM "initZones\locatorZonesV1.sqf";   // CHECK IF ZONES HAVE ALREADY BEEN PLACED
+    } else {
+        _zones_create = [50, 0.2] execVM "initZones\locatorZonesV2.sqf";
+    };
 
-if (!zones_created) then {      // CHECK IF ZONES ARE PLACED, IF NOT EXECUTE locatorZonesV1.sqf
-_zones_create = [50, 0.2] execVM "initZones\locatorZonesV1.sqf";   // CHECK IF ZONES HAVE ALREADY BEEN PLACED
 };
 
-};
 player allowDamage true;
 if (debugmode) exitWith {};
 

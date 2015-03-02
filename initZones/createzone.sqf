@@ -2,7 +2,7 @@
 //         Name of the place,pts,radius,position,fortified/not
 //
 
-_place = _this select 0; 
+_place = _this select 0;
 _points = _this select 1;
 _size = _this select 2;
 _trigger = _this select 3;
@@ -36,7 +36,7 @@ _markerstr2 setMarkerShape "ELLIPSE";
 str(_markername2) setMarkerBrush "SolidBorder";
 str(_markername2) setMarkerColor "ColorRed";
 str(_markername2) setMarkerSize [_size, _size];
-str(_markername2) setMarkerAlpha 0.1; 
+str(_markername2) setMarkerAlpha 0.1;
 
 
 
@@ -104,14 +104,14 @@ _trigger = [(_trigger select 0)-40,_trigger select 1];
 
 // CREATE OPFOR. HEAVY CLUSTERFUCK INCOMING.
 // Check if fortified is true
-if (_fortified) then  
+if (_fortified) then
 {
       [_fortifiedspawn] execvm "createopfortified.sqf";
       sleep 2;
 };
 
 // Check if radius is 100m or smaller => create 2 patrols then exit the script
-if (_size < 101) exitWith  
+if (_size < 101) exitWith
 {
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
       waituntil {scriptdone _handle};
@@ -119,7 +119,7 @@ if (_size < 101) exitWith
       waituntil {scriptdone _handle};
 };
 // Check if radius is 250m-100m => create 2 patrols and 1 fireteam then exit the script/500/8
-if (_size < 251) exitWith  
+if (_size < 251) exitWith
 {
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
       waituntil {scriptdone _handle};
@@ -128,7 +128,7 @@ if (_size < 251) exitWith
       _handle = [_trigger, _size] execvm "createopteam.sqf";
 };
 // Check if radius is 250m-500m => create 2 patrols and 2 fireteams then exit the script/750-1000/12
-if (_size < 500) exitWith  
+if (_size < 500) exitWith
 {
 if (Warcom_Limiter_Param == 1) then {
 
@@ -139,7 +139,7 @@ if (Warcom_Limiter_Param == 1) then {
       _handle = [_trigger, _size] execvm "createopteam.sqf";
 	  waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
-	  
+
 } else
 {
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
@@ -156,7 +156,7 @@ if (Warcom_Limiter_Param == 1) then {
 };
 };
 
-if (_size <= 1000) exitWith                    
+if (_size <= 1000) exitWith
 {
 if (Warcom_Limiter_Param == 1) then {
 
@@ -171,7 +171,7 @@ if (Warcom_Limiter_Param == 1) then {
       _handle = [_trigger, _size] execvm "createopteam.sqf";
       waituntil {scriptdone _handle};
       ["OPF_F","armored",_trigger,_size] execVM "random_veh.sqf";
-	  
+
 } else
 {
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
@@ -191,8 +191,8 @@ if (Warcom_Limiter_Param == 1) then {
       ["OPF_F","armored",_trigger,_size] execVM "random_veh.sqf";
 };
 };
-      
-if (_size <= 1500) exitWith  
+
+if (_size <= 1500) exitWith
 {
 if (Warcom_Limiter_Param == 1) then {
 
@@ -213,7 +213,7 @@ waitUntil {scriptDone _vehcreate};
       _handle = [_trigger, _size] execvm "createopwpteam.sqf";
       waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
-      waituntil {scriptdone _handle};   
+      waituntil {scriptdone _handle};
       ["OPF_F","armored",_trigger,_size] execVM "random_veh.sqf";
 } else
 {
@@ -231,19 +231,19 @@ waitUntil {scriptDone _vehcreate};
       waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createopteam.sqf";
       waituntil {scriptdone _handle};
-      _handle = [_trigger, _size] execvm "createopteam.sqf"; 
+      _handle = [_trigger, _size] execvm "createopteam.sqf";
       waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createopwpteam.sqf";
       waituntil {scriptdone _handle};
      _handle = [_trigger, _size] execvm "createopteam.sqf";
      waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
-      waituntil {scriptdone _handle};   
+      waituntil {scriptdone _handle};
       ["OPF_F","armored",_trigger,_size] execVM "random_veh.sqf";
 };
 };
-	  
-if (_size <= 2000) exitWith  
+
+if (_size <= 2000) exitWith
 {
 if (Warcom_Limiter_Param == 1) then {
 
@@ -270,7 +270,7 @@ waitUntil {scriptDone _vehcreate};
       _handle = [_trigger, _size] execvm "createopteam.sqf";
       waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
-      waituntil {scriptdone _handle};    
+      waituntil {scriptdone _handle};
       ["OPF_F","air",_trigger,_size] execVM "random_veh.sqf";
 } else
 {
@@ -303,12 +303,12 @@ waitUntil {scriptDone _vehcreate};
       _handle = [_trigger, _size] execvm "createopteam.sqf";
       waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
-      waituntil {scriptdone _handle};    
+      waituntil {scriptdone _handle};
       ["OPF_F","air",_trigger,_size] execVM "random_veh.sqf";
 };
 };
-  
-if (_size <= 3000) exitWith  
+
+if (_size <= 3000) exitWith
 {
 if (Warcom_Limiter_Param == 1) then {
 _vehcreate = ["OPF_F","armored",_trigger,_size] execVM "random_veh.sqf";
@@ -338,7 +338,7 @@ waitUntil {scriptDone _vehcreate};
       _handle = [_trigger, _size] execvm "createopteam.sqf";
       waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
-      waituntil {scriptdone _handle};    
+      waituntil {scriptdone _handle};
       ["OPF_F","air",_trigger,_size] execVM "random_veh.sqf";
 } else
 {
@@ -377,12 +377,12 @@ waitUntil {scriptDone _vehcreate};
       _handle = [_trigger, _size] execvm "createopteam.sqf";
       waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
-      waituntil {scriptdone _handle};    
+      waituntil {scriptdone _handle};
       ["OPF_F","air",_trigger,_size] execVM "random_veh.sqf";
 };
 };
 
-// IF NOT IN PARAMETERS (TOO BIG ZONE)        
+// IF NOT IN PARAMETERS (TOO BIG ZONE)
 _vehcreate = ["OPF_F","armored",_trigger,_size] execVM "random_veh.sqf";
 waitUntil {scriptDone _vehcreate};
 
@@ -418,6 +418,5 @@ waitUntil {scriptDone _vehcreate};
       _handle = [_trigger, _size] execvm "createopteam.sqf";
       waituntil {scriptdone _handle};
       _handle = [_trigger, _size] execvm "createoppatrol.sqf";
-      waituntil {scriptdone _handle};   
-      ["OPF_F","air",_trigger,_size] execVM "random_veh.sqf";          
-      
+      waituntil {scriptdone _handle};
+      ["OPF_F","air",_trigger,_size] execVM "random_veh.sqf";

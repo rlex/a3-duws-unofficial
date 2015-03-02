@@ -10,29 +10,32 @@ class startup_dialog
 class controls
 {
 ////////////////////////////////////////////////////////
-// GUI EDITOR OUTPUT START (by kibot, v1.062, #Nanyko)
+// GUI EDITOR OUTPUT START (by Lex, v1.063, #Lulaqy)
 ////////////////////////////////////////////////////////
 class background_request: RscText
 {
 	idc = 1469;
-	x = -0.6 * GUI_GRID_W + GUI_GRID_X;
-	y = -0.48 * GUI_GRID_H + GUI_GRID_Y;
-	w = 41 * GUI_GRID_W;
-	h = 26 * GUI_GRID_H;
+
+	x = 0 * GUI_GRID_W + GUI_GRID_X;
+	y = -0.5 * GUI_GRID_H + GUI_GRID_Y;
+	w = 40 * GUI_GRID_W;
+	h = 31.5 * GUI_GRID_H;
 	colorBackground[] = {0,0,0,0.3};
 };
 class campaign_definer_mainframe: RscFrame
 {
 	idc = 1800;
+
 	text = "DEFINE THE PARAMETERS FOR YOUR CAMPAIGN"; //--- ToDo: Localize;
-	x = 0.1 * GUI_GRID_W + GUI_GRID_X;
-	y = 0.02 * GUI_GRID_H + GUI_GRID_Y;
+	x = 0 * GUI_GRID_W + GUI_GRID_X;
+	y = 0 * GUI_GRID_H + GUI_GRID_Y;
 	w = 40 * GUI_GRID_W;
-	h = 25 * GUI_GRID_H;
+	h = 31 * GUI_GRID_H;
 };
 class zone_max_radius_frame: RscFrame
 {
 	idc = 1801;
+
 	text = "Maximum radius of a zone"; //--- ToDo: Localize;
 	x = 1 * GUI_GRID_W + GUI_GRID_X;
 	y = 1.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -43,6 +46,7 @@ class zone_max_radius_frame: RscFrame
 class zone_min_radius_frame: RscFrame
 {
 	idc = 1802;
+
 	text = "Minimum radius of a zone"; //--- ToDo: Localize;
 	x = 20.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 1.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -53,27 +57,27 @@ class zone_min_radius_frame: RscFrame
 class zone_max_radius_combo: RscCombo
 {
 	idc = 2100;
+
 	x = 1.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 2.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
 	h = 1 * GUI_GRID_H;
 	tooltip = "Define the maximum possible radius of a zone when the enemy zones will be generated"; //--- ToDo: Localize;
-	
-	
 };
 class zone_min_radius_combo: RscCombo
 {
 	idc = 2101;
+
 	x = 21 * GUI_GRID_W + GUI_GRID_X;
 	y = 2.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
 	h = 1 * GUI_GRID_H;
 	tooltip = "Define the minimum possible radius of a zone when the enemy zones will be generated"; //--- ToDo: Localize;
-	
 };
 class zone_number_frame: RscFrame
 {
 	idc = 1803;
+
 	text = "Number of enemy zones"; //--- ToDo: Localize;
 	x = 1 * GUI_GRID_W + GUI_GRID_X;
 	y = 4.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -84,6 +88,7 @@ class zone_number_frame: RscFrame
 class zone_number_combo: RscCombo
 {
 	idc = 2102;
+
 	x = 1.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 5.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
@@ -93,6 +98,7 @@ class zone_number_combo: RscCombo
 class cp_start_frame: RscFrame
 {
 	idc = 1804;
+
 	text = "Starting available Command Points (CP)"; //--- ToDo: Localize;
 	x = 20.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 4.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -103,6 +109,7 @@ class cp_start_frame: RscFrame
 class cp_start_combo: RscCombo
 {
 	idc = 2103;
+
 	x = 21 * GUI_GRID_W + GUI_GRID_X;
 	y = 5.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
@@ -112,6 +119,7 @@ class cp_start_combo: RscCombo
 class bap_start_frame: RscFrame
 {
 	idc = 1805;
+
 	text = "Starting BLUFOR Army Power"; //--- ToDo: Localize;
 	x = 1 * GUI_GRID_W + GUI_GRID_X;
 	y = 7.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -122,6 +130,7 @@ class bap_start_frame: RscFrame
 class bap_start_combo: RscCombo
 {
 	idc = 2104;
+
 	x = 1.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 8.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
@@ -131,6 +140,7 @@ class bap_start_combo: RscCombo
 class oap_start_frame: RscFrame
 {
 	idc = 1806;
+
 	text = "Starting OPFOR Army Power"; //--- ToDo: Localize;
 	x = 20.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 7.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -141,39 +151,55 @@ class oap_start_frame: RscFrame
 class oap_start_combo: RscCombo
 {
 	idc = 2105;
+
 	x = 21 * GUI_GRID_W + GUI_GRID_X;
 	y = 8.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
 	h = 1 * GUI_GRID_H;
-	tooltip = "Define the starting ressources the OPFOR has at the beginning"; //--- ToDo: Localize;
+	tooltip = "Define the starting resources the OPFOR has at the beginning"; //--- ToDo: Localize;
 };
 class text_information: RscText
 {
 	idc = 1000;
+	style = 16;
+
 	text = "Before generating the campaign with non-default parameters, make sure that the island you are playing on is capable to host all the zones. Otherwise the DUWS may not be able to generate the zones."; //--- ToDo: Localize;
 	x = 0.5 * GUI_GRID_W + GUI_GRID_X;
-	y = 19.5 * GUI_GRID_H + GUI_GRID_Y;
+	y = 25.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 39 * GUI_GRID_W;
 	h = 4 * GUI_GRID_H;
 	colorText[] = {1,1,1,1};
-	style = ST_MULTI;
 };
 class start_button: RscButton
 {
 	idc = 1600;
-	text = "START"; //--- ToDo: Localize;
-	x = 16 * GUI_GRID_W + GUI_GRID_X;
+
+	text = "RANDOM START"; //--- ToDo: Localize;
+	x = 1.5 * GUI_GRID_W + GUI_GRID_X;
+	y = 22.5 * GUI_GRID_H + GUI_GRID_Y;
+	w = 8 * GUI_GRID_W;
+	h = 1.5 * GUI_GRID_H;
+	colorBackground[] = {1,0,0,0.5};
+	tooltip = "Randomly generate the zones and start the campaign"; //--- ToDo: Localize;
+	action = "_nul = [] execvm ""dialog\startup\startup_random_start.sqf""";
+};
+class start_button2: RscButton
+{
+	idc = 1601;
+
+	text = "MANUAL START"; //--- ToDo: Localize;
+	x = 31.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 23 * GUI_GRID_H + GUI_GRID_Y;
 	w = 8 * GUI_GRID_W;
 	h = 1.5 * GUI_GRID_H;
-	sizeEx = 0.05;
-	colorBackground[] = {1, 0, 0,0.5};
-	tooltip = "Generate the zones and the campaign"; //--- ToDo: Localize;
-	action = "_nul = [] execvm ""dialog\startup\startup_start.sqf""";
+	colorBackground[] = {1,0,0,0.5};
+	tooltip = "Manually generate the zones, then start the campaign"; //--- ToDo: Localize;
+	action = "_nul = [] execvm ""dialog\startup\startup_manual_start.sqf""";
 };
 class weather_type_frame: RscFrame
 {
 	idc = 1807;
+
 	text = "Weather type"; //--- ToDo: Localize;
 	x = 1 * GUI_GRID_W + GUI_GRID_X;
 	y = 10.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -184,6 +210,7 @@ class weather_type_frame: RscFrame
 class weather_type_combo: RscCombo
 {
 	idc = 2106;
+
 	x = 1.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 11.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
@@ -193,6 +220,7 @@ class weather_type_combo: RscCombo
 class frame_opf_skill: RscFrame
 {
 	idc = 1808;
+
 	text = "Enemy AI skill"; //--- ToDo: Localize;
 	x = 20.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 10.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -203,15 +231,17 @@ class frame_opf_skill: RscFrame
 class combo_opf_skill: RscCombo
 {
 	idc = 2107;
+
 	x = 21 * GUI_GRID_W + GUI_GRID_X;
 	y = 11.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
 	h = 1 * GUI_GRID_H;
-	tooltip = "Set the desired AI skill range for the enemy units"; //--- ToDo: Localize;  
+	tooltip = "Set the desired AI skill range for the enemy units"; //--- ToDo: Localize;
 };
 class frame_blufor_ai_skill: RscFrame
 {
 	idc = 1809;
+
 	text = "Base friendly AI skill"; //--- ToDo: Localize;
 	x = 20.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 13.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -222,6 +252,7 @@ class frame_blufor_ai_skill: RscFrame
 class combo_blufor_ai_skill: RscCombo
 {
 	idc = 2108;
+
 	x = 21 * GUI_GRID_W + GUI_GRID_X;
 	y = 14.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
@@ -231,6 +262,7 @@ class combo_blufor_ai_skill: RscCombo
 class helo_fast_travel_frame: RscFrame
 {
 	idc = 1810;
+
 	text = "Fast travel with Helo taxi ?"; //--- ToDo: Localize;
 	x = 1 * GUI_GRID_W + GUI_GRID_X;
 	y = 13.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -241,6 +273,7 @@ class helo_fast_travel_frame: RscFrame
 class helo_taxi_fasttravel_list: RscCombo
 {
 	idc = 2109;
+
 	x = 1.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 14.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
@@ -250,6 +283,7 @@ class helo_taxi_fasttravel_list: RscCombo
 class fast_travel_frame: RscFrame
 {
 	idc = 1810;
+
 	text = "Allow fast travel"; //--- ToDo: Localize;
 	x = 20.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 16.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -260,6 +294,7 @@ class fast_travel_frame: RscFrame
 class fast_travel_list: RscCombo
 {
 	idc = 2714;
+
 	x = 21 * GUI_GRID_W + GUI_GRID_X;
 	y = 17.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
@@ -269,6 +304,7 @@ class fast_travel_list: RscCombo
 class max_dist_from_hq_frame: RscFrame
 {
 	idc = 1888;
+
 	text = "Maximum distance from the HQ"; //--- ToDo: Localize;
 	x = 1 * GUI_GRID_W + GUI_GRID_X;
 	y = 16.5 * GUI_GRID_H + GUI_GRID_Y;
@@ -279,16 +315,55 @@ class max_dist_from_hq_frame: RscFrame
 class max_dist_from_hq_list: RscCombo
 {
 	idc = 2188;
+
 	x = 1.5 * GUI_GRID_W + GUI_GRID_X;
 	y = 17.5 * GUI_GRID_H + GUI_GRID_Y;
 	w = 17.5 * GUI_GRID_W;
 	h = 1 * GUI_GRID_H;
 	tooltip = "Set the max. distance between the created zones and the HQ"; //--- ToDo: Localize;
 };
+class enemy_unit_multiplier: RscCombo
+{
+	idc = 2189;
+
+	x = 1.5 * GUI_GRID_W + GUI_GRID_X;
+	y = 20.5 * GUI_GRID_H + GUI_GRID_Y;
+	w = 17.5 * GUI_GRID_W;
+	h = 1 * GUI_GRID_H;
+	tooltip = "Set enemy multiplier"; //--- ToDo: Localize;
+};
+class RscFrame_1813: RscFrame
+{
+	idc = 1813;
+	text = "Enemy unit multiplier"; //--- ToDo: Localize;
+	x = 1 * GUI_GRID_W + GUI_GRID_X;
+	y = 19.5 * GUI_GRID_H + GUI_GRID_Y;
+	w = 18.5 * GUI_GRID_W;
+	h = 2.5 * GUI_GRID_H;
+};
+class RscFrame_1356: RscFrame
+{
+	idc = 1356;
+
+	text = "CP Reward multiplier"; //--- ToDo: Localize;
+	x = 20.5 * GUI_GRID_W + GUI_GRID_X;
+	y = 19.5 * GUI_GRID_H + GUI_GRID_Y;
+	w = 18.5 * GUI_GRID_W;
+	h = 2.5 * GUI_GRID_H;
+	tooltip = "Sets command point reward multiplier"; //--- ToDo: Localize;
+};
+class RscCombo_2113: RscCombo
+{
+	idc = 2133;
+
+	x = 21 * GUI_GRID_W + GUI_GRID_X;
+	y = 20.5 * GUI_GRID_H + GUI_GRID_Y;
+	w = 17.5 * GUI_GRID_W;
+	h = 1 * GUI_GRID_H;
+	tooltip = "Sets CP reward multiplier"; //--- ToDo: Localize;
+};
 ////////////////////////////////////////////////////////
 // GUI EDITOR OUTPUT END
 ////////////////////////////////////////////////////////
-
 };
 };
-

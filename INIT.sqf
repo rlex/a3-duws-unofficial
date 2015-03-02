@@ -1,14 +1,14 @@
-diag_log format ["------------------ DUWS Modified START ----v1.75 Modified by BigShot------ player: %1", profileName];
+diag_log format ["------------------ DUWS Unofficial START ----v1.22 based on Modified ------ player: %1", profileName];
 //////////////////////////////////////////////////////
-//  HOW TO MANUALLY CREATE THE MISSION:   
+//  HOW TO MANUALLY CREATE THE MISSION:
 //  1)YOU MUST PLACE THE HQ LOCATION
 //  2)DEFINE THE CAPTURABLE ZONES
 //  -- YOU CAN ALSO JUST PUT A HQ SOMEWHERE AND LET THE ZONES BEING RANDOMLY GENERATED
-//  -- YOU MUST PLACE MANUALLY THE HQ IF YOU ARE ALREADY PLACING THE ZONES BY HAND 
+//  -- YOU MUST PLACE MANUALLY THE HQ IF YOU ARE ALREADY PLACING THE ZONES BY HAND
 //  3) DONT FORGET TO DEFINE THE VARIABLES BELOW. If you are ONLY placing the HQ by hand, you just need to put "hq_manually_placed" to "true" instead of "false". If you are also placing the zones by hand, make "zones_manually_placed" to "true".
 /////////////////////////////////////////////////////////////
-//  1) In the gamelogic, for the HQ( !! MAKE ONLY ONE HQ !!): _null=[getpos this] execVM "initHQ\BluHQinit.sqf" 
-// 
+//  1) In the gamelogic, for the HQ( !! MAKE ONLY ONE HQ !!): _null=[getpos this] execVM "initHQ\BluHQinit.sqf"
+//
 //  2) In the init of gamelogic, to create a capturable enemy zone: _null = ["zone name",pts awarded upon capture, zone radius,getpos this,false/true,false/true] execvm "createzone.sqf";
 //  "zone name": name of the zone
 //  pts awarded upon capture: points you earn when you capture the zone. Also the amount of points of army power you take and receive from the enemy after capture
@@ -28,36 +28,37 @@ diag_log format ["------------------ DUWS Modified START ----v1.75 Modified by B
         zones_manually_placed = false;  // you must specify if you have manually placed the zones or not. false = zones are randomly generated -- true = you have manually placed the zones
 		zones_max_dist_from_hq = 7500;
 		dynamic_weather_enable = true;
+        manually_chosen = false;
 		Attack = false;
 		PlayerMrkrs = true;
 		zoneFound = false;
-		
-		
+
+
 		if (isNil "enable_fast_travel") then
 	{
 	enable_fast_travel = true; // allow fast travel or not
 	};
 	if (isNil "enableChopperFastTravel") then {
 	enableChopperFastTravel = true;  // chopper taxi (support) will fast travel (teleport) or not
-	};	
+	};
 	if (isNil "commandpointsblu1") then
-	{	        
+	{
 		commandpointsblu1 = 20;            // Starting CP
 	};
         if (isNil "blufor_ap") then {blufor_ap = 0;};              // STARTING ARMY POWER
-        opfor_ap = 0; 
+        opfor_ap = 0;
 ///////////////////////////////////////////////////////
 // initialise variables
 //////////////////////////////////////////////////////
 // MOST OF THE VALUES ARE BEING OVERWRITTEN BY PLAYER INPUT AT THE BEGINNING
 //////////////////////////////////////////////////////
- 
+
 /////////////////////////////////////////////////////////////
 debugmode = false;  // Debug mode, kind of obsolete
 /// ------------- VALUES UNDER THIS ARE OVERWRITTEN
 zones_number = 4; // Number of capturables zones to create (when zones are created randomly)
 zones_spacing = 2000; // minimum space between 2 zones (in meters) // SOON OBSOLETE
-zones_max_radius = 700;   // Determine the maximum radius a generated zone can have   
+zones_max_radius = 700;   // Determine the maximum radius a generated zone can have
 zones_min_radius = 350; // Determine the minium radius a generated zone can have. SHOULD NOT BE UNDER 200.
 ///////////////////////////////////////////////////////
 // This mission will have a harder time generating stuff if a lot of the terrain of the island is sloped, meaning that valid locations will be harder/take longer to find (side missions, mission init).
@@ -72,151 +73,152 @@ waitUntil {scriptDone persistent_stat_script_init};
 execvm "dynamic_music\dyn_music_init.sqf";
 [] call compile preprocessFile "kndr_unit_markers.sqf";
 
+//enable ZBE units caching
+ZbeCacheStatus = paramsArray select 10;
 
-
-
-
-
-	missions_success = 0; // nber of missions succes(!!dont touch!!)
-
-	zones_created = false;
-	blu_hq_created = false;
-	can_get_mission = true;
-	failsafe_zones_not_found = false;
-	createcenter sideLogic;
-	LogicGroup = createGroup SideLogic;
-	PAPABEAR=[West,"HQ"];
-	locator_hq_actived = false;
-	op_zones_index = 0;
-	clientisSync = false;
-	fobSwitch = false;
-	player_is_choosing_hqpos = false;
-	
-	
-
-	if (isNil "amount_zones_created") then
-	{	
-	amount_zones_created = 0;
-	};
-
-	if (isNil "HQ_pos_found_generated") then
-	{
-	HQ_pos_found_generated = false;
-	}; 	
-	
-	if (isNil "chosen_settings") then
-	{	
-	chosen_settings = false;
-	};
-	
-	if (isNil "chosen_hq_placement") then
-	{	
-	chosen_hq_placement = false;
-	};
-	
-	if (isNil "zoneundercontrolblu") then
-	{	
-	zoneundercontrolblu = 0;
-	};
-
-	if (isNil "amount_zones_captured") then
-	{	
-	amount_zones_captured = 0;
-	};
-	if (isNil "savegameNumber") then
-	{	
-	savegameNumber = 0;
-	};
-	if (isNil "capturedZonesNumber") then
-	{	
-	capturedZonesNumber = 0;
-	};	
-	if (isNil "finishedMissionsNumber") then
-	{	
-	finishedMissionsNumber = 0;
-	};	
-	if (isNil "OvercastVar") then
-	{	
-	OvercastVar = 0;
-	};	
-	if (isNil "FogVar") then
-	{	
-	FogVar = 0;
-	};
-	if (isNil "WindVar") then
-	{	
-	WindVar = 0;
-	};
-	if (isNil "Array_of_FOBS") then // this is a special one (if/else)
-	{	// if the player is sp or server or no fobs have been created
-	Array_of_FOBS = [];
-	}
-	else /// JIP for the client
-	{
-		{
-		[_x] execVM "support\FOBactions.sqf";
-		} forEach Array_of_FOBS;
-	};
-	if (isNil "Array_of_FOBname") then
-	{
-	Array_of_FOBname = [];
-	};
-	if (isNil "WARCOM_zones_controled_by_BLUFOR") then
-	{
-	WARCOM_zones_controled_by_BLUFOR = [];publicVariable "WARCOM_zones_controled_by_BLUFOR";
-	};
-	if (isNil "Array_of_OPFOR_zones") then
-	{
-	Array_of_OPFOR_zones = [];publicVariable "Array_of_OPFOR_zones";
-	};
-	if (isNil "WARCOM_zones_controled_by_OPFOR") then
-	{
-	WARCOM_zones_controled_by_OPFOR = [];publicVariable "WARCOM_zones_controled_by_OPFOR";
-	};
-	if (isNil "MTV1cap") then
-	{
-	MTV1cap = false;publicVariable "MTV1cap";
-	};
-	if (isNil "MTV1") then
-	{
-	MTV1 = ObjNull;
-	};
-	if (isNil "weatherdone") then
-	{
-	weatherdone = false;publicVariable "weatherdone";
-	};
-	if (isNil "officedead") then
-	{	
-	officedead = false;publicVariable "officedead";
-	};
-	
-	
-	//MTV MARKER JIP
-	if (!isServer) then{	
-	if ((MTV1cap) && (alive MTV1)) then {[MTV1, "mil_triangle", "ColorGreen", "2", "2", "MTV-1"] call kndr_assignMarker};
-	};
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-
-	
-	player allowDamage false;
-	
-	//Time of Day
-	 if (time < 10) then {
-    setDate [2035, 8, 6, (paramsArray select 3), 1];
+if (ZbeCacheStatus == 1) then {
+	if (isServer) then {[1000,-1,false,100,1000,1000]execvm "zbe_cache\main.sqf"};
 };
 
-	#include "dialog\supports_init.hpp"
-	#include "dialog\squad_number_init.hpp"
-	
-	
-		
+
+missions_success = 0; // nber of missions succes(!!dont touch!!)
+zones_created = false;
+blu_hq_created = false;
+can_get_mission = true;
+failsafe_zones_not_found = false;
+createcenter sideLogic;
+LogicGroup = createGroup SideLogic;
+PAPABEAR=[West,"HQ"];
+locator_hq_actived = false;
+op_zones_index = 0;
+clientisSync = false;
+fobSwitch = false;
+player_is_choosing_hqpos = false;
+
+
+if (isNil "amount_zones_created") then
+{
+amount_zones_created = 0;
+};
+
+if (isNil "HQ_pos_found_generated") then
+{
+HQ_pos_found_generated = false;
+};
+
+if (isNil "chosen_settings") then
+{
+chosen_settings = false;
+};
+
+if (isNil "chosen_hq_placement") then
+{
+chosen_hq_placement = false;
+};
+
+if (isNil "zoneundercontrolblu") then
+{
+zoneundercontrolblu = 0;
+};
+
+if (isNil "amount_zones_captured") then
+{
+amount_zones_captured = 0;
+};
+if (isNil "savegameNumber") then
+{
+savegameNumber = 0;
+};
+if (isNil "capturedZonesNumber") then
+{
+capturedZonesNumber = 0;
+};
+if (isNil "finishedMissionsNumber") then
+{
+finishedMissionsNumber = 0;
+};
+if (isNil "OvercastVar") then
+{
+OvercastVar = 0;
+};
+if (isNil "FogVar") then
+{
+FogVar = 0;
+};
+if (isNil "WindVar") then
+{
+WindVar = 0;
+};
+if (isNil "Array_of_FOBS") then // this is a special one (if/else)
+{	// if the player is sp or server or no fobs have been created
+Array_of_FOBS = [];
+}
+else /// JIP for the client
+{
+	{
+	[_x] execVM "support\FOBactions.sqf";
+	} forEach Array_of_FOBS;
+};
+if (isNil "Array_of_FOBname") then
+{
+Array_of_FOBname = [];
+};
+if (isNil "WARCOM_zones_controled_by_BLUFOR") then
+{
+WARCOM_zones_controled_by_BLUFOR = [];publicVariable "WARCOM_zones_controled_by_BLUFOR";
+};
+if (isNil "Array_of_OPFOR_zones") then
+{
+Array_of_OPFOR_zones = [];publicVariable "Array_of_OPFOR_zones";
+};
+if (isNil "WARCOM_zones_controled_by_OPFOR") then
+{
+WARCOM_zones_controled_by_OPFOR = [];publicVariable "WARCOM_zones_controled_by_OPFOR";
+};
+if (isNil "MTV1cap") then
+{
+MTV1cap = false;publicVariable "MTV1cap";
+};
+if (isNil "MTV1") then
+{
+MTV1 = ObjNull;
+};
+if (isNil "weatherdone") then
+{
+weatherdone = false;publicVariable "weatherdone";
+};
+if (isNil "officedead") then
+{
+officedead = false;publicVariable "officedead";
+};
+
+
+//MTV MARKER JIP
+if (!isServer) then{
+if ((MTV1cap) && (alive MTV1)) then {[MTV1, "mil_triangle", "ColorGreen", "2", "2", "MTV-1"] call kndr_assignMarker};
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+player allowDamage false;
+
+//Time of Day
+ if (time < 10) then {
+setDate [2035, 8, 6, (paramsArray select 3), 1];
+};
+
+#include "dialog\supports_init.hpp"
+#include "dialog\squad_number_init.hpp"
+
+
+
 if (!isMultiplayer) then {
 	getsize_script = [player] execVM "mapsize.sqf";
-};	
-	
+};
+
 
 Warcom_Limiter_Param = paramsArray select 6; //disbale/enable warcomm AI limiter for improved fps
 // IF MP
@@ -232,7 +234,7 @@ if (isMultiplayer) then {
 	UseSiren = paramsArray select 8;
 	MisEndCond = paramsArray select 9;
 
-	
+
 	if (revive_activated == 1) then {[]execVM "duws_revive\reviveInit.sqf"};
 	if (revive_activated == 0) then {vas_onRespawn = true};
 	if (AttackHeli == 0) then {Attack = false};
@@ -240,7 +242,7 @@ if (isMultiplayer) then {
 	if (TrkAllPlayer == 0) then {PlayerMrkrs = false};
 	if (player_fatigue == 0) then {[]execVM "fatigue.sqf"};
 	if (UseIED == 1) then {[] spawn {call compile preprocessFileLineNumbers "EPD\Ied_Init.sqf";}};
-	
+
 	// TcB AIS Wounding System --------------------------------------------------------------------------
 if (revive_activated == 2) then {
 
@@ -251,31 +253,31 @@ if ((!isDedicated) || (!isServer)) then {
 };
 };
 // --------------------------------------------------------------------------------------------------------------
-	
-		
+
+
 
 	if (support_armory_available) then {hq_blu1 addaction ["<t color='#ff0066'>Armory 1 (VAS)</t>","VAS\open.sqf", "", 0, true, true, "", "_this == player"];};
 	if (support_armory_available) then {hq_blu1 addaction ["<t color='#ff0066'>Armory 2 (VA)</t>","va.sqf", "", 0, true, true, "", "_this == player"];};
 	if (support_halo_available) then {hq_blu1 addAction ["<t color='#15ff00'>HALO Alone (5CP)</t>", "ATM_airdrop\atm_airdrop.sqf", "", 0, true, true, "", "_this == player"];};
 	if (support_halo_available) then {hq_blu1 addAction ["<t color='#15ff00'>HALO Group (5CP)</t>", "COB_HALO\grphalo.sqf", "", 0, true, true, "", "_this == player"];};
-	
+
 	if (support_armory_available) then {_x addaction ["<t color='#ff0066'>Armory 1 (VAS)</t>","VAS\open.sqf", "", 0, true, true, "", "_this == player"]} forEach (Array_of_FOBS);
 	if (support_armory_available) then {_x addaction ["<t color='#ff0066'>Armory 2 (VA)</t>","va.sqf", "", 0, true, true, "", "_this == player"]} forEach (Array_of_FOBS);
 	if (support_halo_available) then {_x addaction ["<t color='#15ff00'>HALO Alone (5CP)</t>", "ATM_airdrop\atm_airdrop.sqf", "", 0, true, true, "", "_this == player"]} forEach (Array_of_FOBS);
-    if (support_halo_available) then {_x addaction ["<t color='#15ff00'>HALO Group (5CP)</t>", "COB_HALO\grphalo.sqf", "", 0, true, true, "", "_this == player"]} forEach (Array_of_FOBS);	
-	
-	
-		
-	
+    if (support_halo_available) then {_x addaction ["<t color='#15ff00'>HALO Group (5CP)</t>", "COB_HALO\grphalo.sqf", "", 0, true, true, "", "_this == player"]} forEach (Array_of_FOBS);
+
+
+
+
 	PlayerKilledEH = player addEventHandler ["killed", {commandpointsblu1 = commandpointsblu1 - DUWSMP_CP_death_cost; publicVariable "commandpointsblu1"}];
 	"support_specialized_training_available" addPublicVariableEventHandler {lbSetColor [2103, 11, [0, 1, 0, 1]];};
 	"commandpointsblu1" addPublicVariableEventHandler {ctrlSetText [1000, format["%1",commandpointsblu1]];}; // change the shown CP for request dialog
 
-	
+
 	// each time there is a new FOB
 	"Array_of_FOBS" addPublicVariableEventHandler {
-	
-	if (!fobSwitch) then 
+
+	if (!fobSwitch) then
 	{
 		[] execVM "support\FOBreceiveaction.sqf";
 	};
@@ -284,21 +286,21 @@ if ((!isDedicated) || (!isServer)) then {
 		_fobAmount = count Array_of_FOBS;
 		_fobIndex = _fobAmount - 1;
 		_createdFOB = Array_of_FOBS select _fobIndex;
-		
+
 		[missionNamespace, _createdFOB] call BIS_fnc_addRespawnPosition;
 	};
-	
+
 	if (!isServer) then {
 	"savegameNumber" addPublicVariableEventHandler {[] execVM "savegameClient.sqf";};
 	};
 	if (!isServer) then {
-	"capturedZonesNumber" addPublicVariableEventHandler {[] execVM "persistent\persistent_stats_zones_add.sqf";}; // change the shown CP for request dialog	
+	"capturedZonesNumber" addPublicVariableEventHandler {[] execVM "persistent\persistent_stats_zones_add.sqf";}; // change the shown CP for request dialog
 	};
 	if (!isServer) then {
-	"finishedMissionsNumber" addPublicVariableEventHandler {[] execVM "persistent\persistent_stats_missions_total.sqf";}; // change the shown CP for request dialog	
+	"finishedMissionsNumber" addPublicVariableEventHandler {[] execVM "persistent\persistent_stats_missions_total.sqf";}; // change the shown CP for request dialog
 	};
-		
-		
+
+
     if (isServer) then { // SERVER INIT
 	DUWS_host_start = false;
 	publicVariable "DUWS_host_start";
@@ -306,23 +308,23 @@ if ((!isDedicated) || (!isServer)) then {
 	getsize_script = [player] execVM "mapsize.sqf";
 	DUWS_host_start = true;
 	publicVariable "DUWS_host_start";
-	
- 
- 
+
+
+
 
 	// init High Command
 	_handle = [] execVM "dialog\hc_init.sqf";
 	waitUntil {scriptDone getsize_script};
 	};
 
-		
+
 };
 
 
 
 
 
-if (isServer) then 
+if (isServer) then
 {
 
 _null = [] execVM "dialog\startup\hq_placement\placement.sqf";
@@ -333,7 +335,7 @@ waitUntil {chosen_hq_placement};
 	// create random HQ
 	if (!hq_manually_placed && !player_is_choosing_hqpos) then {
 	hq_create = [20, 0.015] execVM "initHQ\locatorHQ.sqf";
-	waitUntil {scriptDone hq_create};	
+	waitUntil {scriptDone hq_create};
 	};
 
 };
@@ -344,13 +346,13 @@ waitUntil {chosen_hq_placement};
 // group cleaning script
 if (isServer) then {
 clean = [
-		5*60, // seconds to delete dead bodies (0 means don't delete) 
+		5*60, // seconds to delete dead bodies (0 means don't delete)
 		5*60, // seconds to delete dead vehicles (0 means don't delete)
 		0, // seconds to delete immobile vehicles (0 means don't delete)
 		5*60, // seconds to delete dropped weapons (0 means don't delete)
 		0, // seconds to deleted planted explosives (0 means don't delete)
 		10*60 // seconds to delete dropped smokes/chemlights (0 means don't delete)
-] execVM 'repetitive_cleanup.sqf';	
+] execVM 'repetitive_cleanup.sqf';
 };
 
 
@@ -362,23 +364,23 @@ clean = [
 if (!isServer) then { // WHEN CLIENT CONNECTS INIT (might need sleep)
 //	waitUntil {isPlayer Player};
     waitUntil {!isNull player};
-	hintsilent "Waiting for the host to find an HQ...";	
+	hintsilent "Waiting for the host to find an HQ...";
 	waitUntil {HQ_pos_found_generated && time > 0.1};
 	sleep 1;
 //	player setpos [(getpos hq_blu1 select 0),(getpos hq_blu1 select 1)+10];
 	player setpos [(getmarkerpos str blu_hq_markername select 0),(getmarkerpos str blu_hq_markername select 1)+10];
 	_drawicon = [] execVM "inithq\drawIcon.sqf";
-	hintsilent "Waiting for the host to select the campaign parameters...";	
-	waitUntil {chosen_settings};	
+	hintsilent "Waiting for the host to select the campaign parameters...";
+	waitUntil {chosen_settings};
 	[hq_blu1] execVM "initHQ\HQaddactions.sqf";
 	sleep 1;
-	player setdamage 0;	
+	player setdamage 0;
 	player allowDamage true;
 	hintsilent format["Joined game, welcome to %1, %2",worldName,profileName];
 	// init High Command
 	_handle = [] execVM "dialog\hc_init.sqf";
 	[] execVM "dialog\startup\weather_client.sqf";
-		
+
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -404,10 +406,10 @@ execVM "dialog\operative\operator_init.sqf";
 // Revive
 _index = player createDiarySubject ["revivehelp","AI Revive"];
 player createDiaryRecord ["revivehelp",["Known Issues", "- AI will sometimes stop responding to your commands. To avoid this you should always use the ""return to formation"" command on your entire group right after any revive has been performed by anyone in your group. If this does not work then simply delete the offending unit/s using the squad manager in your action menu.<br/><br/>- When using AI revive with other human players joined in your group, the  group leader position will change back and forth between the human players.<br/><br/> - AI may not ALWAYS revive the player 100% of the time. This is normal behavior and is to be expected sometimes, especially if the fighting gets very intense or the situation is too unsafe.<br/><br/>Injury script by: [TcB]-Psycho- many thanks for this!<br/>...special thanks must also go out to the coding skills of ""MDCCLXXVI"" from the Bohemia forums for fixing the command-loss issue"]];
-player createDiaryRecord ["revivehelp",["Overview", "Enabled/Disabled in the Parameters Menu:<br/>When enabled, the AI units that you purchase for your group will be able to revive you if you get injured and fall unconscious (you can use your 'H' key to call for help faster, but not necessary...but be patient with the AI they sometimes take a long time to reach you). All human players will also be able to revive.<br/><br/>Purchased High command groups cannot revive you, ONLY the 'Single Units', 'Special Operatives' AND Paradrop AI can revive.<br/><br/>NOTE:<br/><br/>If sometimes you need to respawn instead of waiting to be revived then hit escape/respawn.<br/><br/>This script is not 100% reliable and you may notice some odd happenings within your group units from time to time. It is being used here as an experimental addition to DUWS.<br/><br/>Injury script by: [TcB]-Psycho- many thanks for this!<br/>...and a thousand special thanks must also go out to the coding skills of ""MDCCLXXVI"" from the Bohemia forums for fixing the command-loss issue"]]; 
+player createDiaryRecord ["revivehelp",["Overview", "Enabled/Disabled in the Parameters Menu:<br/>When enabled, the AI units that you purchase for your group will be able to revive you if you get injured and fall unconscious (you can use your 'H' key to call for help faster, but not necessary...but be patient with the AI they sometimes take a long time to reach you). All human players will also be able to revive.<br/><br/>Purchased High command groups cannot revive you, ONLY the 'Single Units', 'Special Operatives' AND Paradrop AI can revive.<br/><br/>NOTE:<br/><br/>If sometimes you need to respawn instead of waiting to be revived then hit escape/respawn.<br/><br/>This script is not 100% reliable and you may notice some odd happenings within your group units from time to time. It is being used here as an experimental addition to DUWS.<br/><br/>Injury script by: [TcB]-Psycho- many thanks for this!<br/>...and a thousand special thanks must also go out to the coding skills of ""MDCCLXXVI"" from the Bohemia forums for fixing the command-loss issue"]];
 // IED's
 _index = player createDiarySubject ["iedhelp","Random IED's"];
-player createDiaryRecord ["iedhelp",["Overview", "Enabled/Disabled in the Parameters Menu:<br/>When enabled there will be randomly placed IED explosives in villages, cities and along or near roads. The IED's can be any normal appearing object such as cars, wrecks, trash, almost anything really.<br/><br/>If you suspect an object may be an IED you can either stay away from it completely OR you can attempt to disarm it. All players can disarm an IED by very carefully approaching it. Once you get within 20m of it get down and crawl the rest of the way on your belly until you get to see the 'disarm' in your action menu.<br/><br/>NOTE:<br/>It is normal to have some bad lag at the very start of the mission when the IED's are first initalized. This lag will subside once the mission has fully completed all of it's initialization routines which can take a minute or so.<br/><br/>IED script by: Brian Sweeney - Thank you for all your hard work in releasing this to the public!"]]; 
+player createDiaryRecord ["iedhelp",["Overview", "Enabled/Disabled in the Parameters Menu:<br/>When enabled there will be randomly placed IED explosives in villages, cities and along or near roads. The IED's can be any normal appearing object such as cars, wrecks, trash, almost anything really.<br/><br/>If you suspect an object may be an IED you can either stay away from it completely OR you can attempt to disarm it. All players can disarm an IED by very carefully approaching it. Once you get within 20m of it get down and crawl the rest of the way on your belly until you get to see the 'disarm' in your action menu.<br/><br/>NOTE:<br/>It is normal to have some bad lag at the very start of the mission when the IED's are first initalized. This lag will subside once the mission has fully completed all of it's initialization routines which can take a minute or so.<br/><br/>IED script by: Brian Sweeney - Thank you for all your hard work in releasing this to the public!"]];
 // Operatives
 _index = player createDiarySubject ["operativehelp","Special Operatives"];
 player createDiaryRecord ["operativehelp", ["Skills", "<font color='#FF0000'>Aiming:</font color><br/>Pretty self explanatory, how well the operative can aim, lead a target, compensante for bullet drop and manage recoil.<br/><br/><font color='#FF0000'>Reflexes:</font color><br/>How fast the operator can react to a new threat and stabilize its aim.<br/><br/><font color='#FF0000'>Spotting:</font color><br/>The operative ability to spot targets within it's visual or audible range, and how accurately he can spot targets.<br/><br/><font color='#FF0000'>Courage:</font color><br/>Affects the morale of subordinates units of the operative, how likely they will flee, depending on what is in front of them and the squad status.<br/><br/><font color='#FF0000'>Communications:</font color><br/>How quickly recognized targets are shared with the squad.<br/><br/><font color='#FF0000'>Reload speed:</font color><br/>The operator's ability to switch weapon or reload quickly."]];
@@ -418,7 +420,7 @@ _index = player createDiarySubject ["weatherhelp","Weather"];
 player createDiaryRecord ["weatherhelp",["Known Issues", "The 'Dynamic and Variable' changing weather setting can take up to 60 minutes or even longer to go back and forth between extreme conditions such as from completely sunny to completely stormy.<br/><br/>This is just how the game engine works in Arma3 and is considered normal. The only other option would be to have the weather change instantly (which I've only chosen to do at mission start).<br/><br/>Weather conditions while using this new default option should be properly updated for both clients and JIP players alike."]];
 
 // Duws Manual
-_index = player createDiarySubject ["help","DUWS Manual"]; 
+_index = player createDiarySubject ["help","DUWS Manual"];
 player createDiaryRecord ["help", ["Feedback/bug report", "Please report any bug you see REGARDING THE MISSION by contacting me (BigShot) on the BIS forums, or on the Steam Workshop page for DUWS Modified.<br/><br/>** Due to the vast amount of scripts in DUWS Modified you must be VERY careful what type of mods or addons you try to use with it. The only known safe type of mods to use with this mission are generally mods for sound, weapon sway/recoil, ShakTac HUD, CBA. Any mods or addons that inject AI and/or that modify behavior will break DUWS.<br/><br/>If you are experiencing unexpected behavior or results in DUWS while you are running it with mods enabled then please do not report these. Only report issues that can be reproduced with no mods/addons enabled.<br/>Please keep in mind that this mission is still in development. Suggestions/feedbacks are welcome."]];
 player createDiaryRecord ["help", ["Credits", "Original Version by Kibot. Modified Version by BigShot.<br/>VAS script and TAW view distance by Tonic.<br/>ATM Airdrop HALO script by PokerTour.<br/>Group HALO was implemented via an original script by cobra4v320.<br/>Defuse Bomb script by Cobra4v320.<br/>Thanks to Kempco for the mapsize script.<br/>Thanks to FrankHH for correcting the typos.<br/>Thanks to FunkDooBiesT for his help and his time.<br/>Thanks to WolfFlight[TZW] and Amarak[TZW] for their help.<br/>Repetitive Cleanup, SET/GET loadout and Player Marker scripts by aeroson.<br/>Thanks to timsk.<br/>Thanks to Dolemite and Rukus for all their patience in testing."]];
 player createDiaryRecord ["help", ["Taking the Island", "At the beginning of the game, you are alone with your officer and only a few command points available, but as the war escalates, the BLUFOR HQ will start to launch attacks on enemy zone and will try to retake the island. You can help the main forces by assisting them in capturing the island, or you can also achieve side missions to boost the available assets of your army. It's up to you on how you want to play this campaign."]];
@@ -492,7 +494,6 @@ sleep 2.5;
 sleep 15;
 ["info",["RESTING AND HEALING","Save the game and heal by resting at the base"]] call bis_fnc_showNotification;
 
-
 sleep 15;
 // SITREP
 ["sitrepinfo",["SITREP","You can also save the game by giving a SITREP"]] call bis_fnc_showNotification;
@@ -501,7 +502,7 @@ sleep 2;
 sleep 20;
 ["info",["DUWS Manual","Check the manual in the briefing for more info"]] call bis_fnc_showNotification;
 
-profileNamespace setVariable ["profile_DUWS_firstlaunch", false]; 
+profileNamespace setVariable ["profile_DUWS_firstlaunch", false];
 saveProfileNamespace;
 };
 
@@ -531,13 +532,14 @@ waitUntil {!isNil "protect_officer"};
 hq_blu1 addeventhandler ["firednear", {_this call protect_officer}];
 execVM "grenadeStop.sqf";
 
-
+_satcom1 = [] execVM "pxs_satcom_a3\init_satellite.sqf";
+execVM "R3F_LOG\init.sqf";
 
 if (isServer) then {
 supportreinit = addMissionEventHandler ["loaded",{[] execVM "supports_reinit.sqf"}];
 };
 
 ////////////////INIT NO MOVING WITH FASTTRAVEL///////////////////////////////////////
-fn_enableSimulation = {(_this select 0) enableSimulation (_this select 1)}; 
+fn_enableSimulation = {(_this select 0) enableSimulation (_this select 1)};
 
-//////////////////////////////////////////////////////////////////////////////////// 
+////////////////////////////////////////////////////////////////////////////////////
