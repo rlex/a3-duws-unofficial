@@ -6,7 +6,14 @@ _radius   = _this select 1;
 
 // hint format["%1",_position];
 
-_group = [_position, EAST, ["O_Soldier_F","O_Soldier_F"],[],[],opfor_ai_skill] call BIS_fnc_spawnGroup;
+_initGroup = ["O_Soldier_F","O_Soldier_F"];
+_multipliedGroup = [];
+if (enemyunitMultiplier < 0) then {enemyunitMultiplier = 1};
+for "_i" from 0 to (enemyunitMultiplier - 1) step 1 do
+{
+	_multipliedGroup = _multipliedGroup + _initGroup;
+};
+_group = [_position, EAST, _multipliedGroup,[],[],opfor_ai_skill] call BIS_fnc_spawnGroup;
 _patrolRadius = round(_radius/2);
 [_group, _position, _patrolradius] call bis_fnc_taskPatrol;
 
