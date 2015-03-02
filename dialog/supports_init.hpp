@@ -32,25 +32,25 @@ support_hcREPAIR_available = false;
 support_hcREFUEL_available = false;
 support_FOB_available = false;
 support_hcBob_available = false;
+support_satcom_available = false;
 
 
-
-	if (isNil "support_specialized_training_available") then
-	{
+if (isNil "support_specialized_training_available") then
+{
 	support_specialized_training_available = false;
-	};
+};
 
-	if (isNil "support_armory_available") then
-	{
+if (isNil "support_armory_available") then
+{
 	support_armory_available = false;
-	};
-	
-	if (isNil "support_halo_available") then
-	{
+};
+
+if (isNil "support_halo_available") then
+{
 	support_halo_available = false;
-	};
-	
-	if (isNil "support_FOB_available") then
-	{
+};
+
+if (isNil "support_FOB_available") then
+{
 	support_FOB_available = false;
-	};	
+};
