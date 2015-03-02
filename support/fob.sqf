@@ -78,6 +78,7 @@ DUWS_fnc_fob = {
 	if (support_armory_available) then {_this addaction ["<t color='#ff0066'>Armory 2 (VA)</t>","va.sqf", "", 0, true, true, "", "_this == player"];};
     if (support_halo_available) then {_this addAction ["<t color='#15ff00'>HALO Alone (5CP)</t>", "ATM_airdrop\atm_airdrop.sqf", "", 0, true, true, "", "_this == player"];};
 	if (support_halo_available) then {_this addAction ["<t color='#15ff00'>HALO Group (5CP)</t>", "COB_HALO\grphalo.sqf", "", 0, true, true, "", "_this == player"];};
+    if (support_satcom_available) then {_this addAction ["<t color='#ff0066'>SATCOM</t>", {call PXS_startSatellite;}, "", 0, true, true, "", "_this == player"];};
     _this addaction ["<t color='#15ff00'>FOB/Teleport</t>","dialog\fob\FOBmanageropen.sqf", "", 0, true, true, "", "_this == player"];
     _this addaction ["<t color='#99ff00'>REQUESTS MENU>></t>","dialog\request_fob.sqf", "", 6, true, true, "", "_this == player"];
     _this addaction ["<t color='#ffb700'>Squad Manager</t>","dialog\squad\squadmng.sqf", "", 0, true, true, "", "_this == player"];

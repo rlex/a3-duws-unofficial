@@ -1,7 +1,7 @@
 OnLoadMission = "A procedurally generated campaign where you earn resources, execute missions and lead the BLUFOR forces to capture the island and win the war.";
-onLoadName = "Dynamic Universal WAR System (DUWS) Modified v1.75";
+onLoadName = "DUWS Unofficial 1.22";
 dev = "dev";
-author = "Kibot / Modified by BigShot";
+author = "Kibot / BigShot / rlex";
 overviewText = "A procedurally generated campaign where you earn resources, execute missions and lead the BLUFOR forces to capture the island and win the war. Play the way you want: be a spec ops, a squad leader or control a whole army, the choice is yours. (In the future, the DUWS will feature persistent elements that allow you to play a single campaign throughout multiple islands.)";
 overviewPicture = "rtipic.paa";
 LoadScreen = "rtipic.paa";
@@ -39,16 +39,15 @@ allowFunctionsLog = 0;
 #include "params.hpp"
 #include "duws_revive\gui\duws_revive.hpp"
 #include "missions\missions\roulette\bomb\keypad_defuse\explosivePad.hpp"
-
-
-
-// VAS INIT BEGIN --  ALSO TAW VIEWDISTANCE
-#include "taw_vd\dialog.hpp"       
+#include "pxs_satcom_a3\init_interface.hpp"
+#include "CHVD\dialog.hpp"
 #include "VAS\menu.hpp"
+#include "R3F_LOG\desc_include.h"
+
 class CfgFunctions
 {
 	#include "VAS\cfgfunctions.hpp"
-	#include "taw_vd\CfgFunctions.hpp"
+	#include "CHVD\CfgFunctions.hpp"
 	#include "ais_injury\cfgFunctionsAIS.hpp"
 	#include "EPD\EPDcfgFunctions.hpp"
 
