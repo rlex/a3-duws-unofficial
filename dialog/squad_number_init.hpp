@@ -19,4 +19,3 @@ DUWS_number_casa = 0;
 DUWS_number_grndt = 0;
 DUWS_number_repaira = 0;
 DUWS_number_refuela = 0;
-

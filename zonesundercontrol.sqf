@@ -1,8 +1,6 @@
-// CP every 30 mins (1800) 
+// CP every 30 mins (1800)
 
 _undercontrol = true;
-
- 
 
 while {_undercontrol} do {
 
@@ -13,6 +11,5 @@ while {_undercontrol} do {
  commandpointsblu1 = commandpointsblu1 + (zoneundercontrolblu*3);
  publicVariable "commandpointsblu1";
  ctrlSetText [1000, format["%1",commandpointsblu1]];
- 
-};
 
+};

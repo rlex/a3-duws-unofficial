@@ -26,21 +26,21 @@ _scope = getNumber (_checked_veh >> "scope"); // check if actually present in ed
 _simulation_paracheck = getText (_checked_veh >> "simulation"); // check if not a parachute
 
 
-   if (_actual_vehclass == _vehClass && _actual_faction == _faction && _scope != 0 && _simulation_paracheck != "Parachute" && _classname != "O_MBT_02_arty_F" && _classname != "O_APC_Tracked_02_AA_F" && _classname != "O_APC_Tracked_02_cannon_F") exitWith {  
+   if (_actual_vehclass == _vehClass && _actual_faction == _faction && _scope != 0 && _simulation_paracheck != "Parachute" && _classname != "O_MBT_02_arty_F" && _classname != "O_APC_Tracked_02_AA_F" && _classname != "O_APC_Tracked_02_cannon_F") exitWith {
 //   hintSilent format["%1",_classname];
 //   _veh = createVehicle [_classname, _position, [], 0, _vehClass];
    _foundVeh = _classname;
    _found = true;
    };
-  };   
+  };
 };   // --- VEHICLE FOUND --> _foundVeh
 
 // DETERMINE LA FACTION
-_side = EAST; 
+_side = EAST;
 if(_faction=="BLU_F") then {_side=WEST};
 if(_faction=="OPF_F") then {_side=EAST};
 if(_faction=="IND_F") then {_side=RESISTANCE};
-if(_faction=="CIV_F") then {_side=CIVILIAN};  
+if(_faction=="CIV_F") then {_side=CIVILIAN};
 
 
 _createdVehFnc = [[(_position select 0)+30, (_position select 1)],0,_foundVeh,_side] call bis_fnc_spawnvehicle;

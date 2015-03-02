@@ -1,8 +1,5 @@
-_place   =   _this select 0; 
+_place   =   _this select 0;
 _trigger =   _this select 1;
-
-
-
 
 sleep 0.5;
 
@@ -12,7 +9,5 @@ sleep 0.5;
 waitUntil {
 sleep 1;
 count _trigger < 1;
-}; 
+};
 ["location_leave",[_place]] call bis_fnc_showNotification;
-   
-

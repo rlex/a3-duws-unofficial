@@ -29,7 +29,7 @@ class Mission
 	randomSeed=16091530;
 	class Intel
 	{
-		briefingName="[SP/MP]Dynamic Universal War System Modified v1.75";
+		briefingName="[SP/MP]DUWS Unofficial v1.22";
 		overviewText="Play a full, randomly generated campaign on whatever island you want to.";
 		startWeather=0;
 		startWind=0;
