@@ -2,41 +2,35 @@ _index2 = lbCurSel 2103;
 
 switch (_index2) do
 {
-    case 0:  
+    case 0:
     {
-         if (!support_camera_available) then 
-             {
-              if (commandpointsblu1>=10) then
+         if (commandpointsblu1 >= 30) then
+            {
+              if (!support_satcom_available) then
                 {
-                  commandpointsblu1 = commandpointsblu1 - 10;
-                  ctrlSetText [1000, format["%1",commandpointsblu1]];
-                  _camera = [player,"cam"] call BIS_fnc_addCommMenuItem;
-				  Camera =_camera;
-                  lbSetColor [2103, 0, [0, 1, 0, 1]];
-				  playSound "boots";
-                  support_camera_available = true;
+                commandpointsblu1 = commandpointsblu1 - 30;
+                ctrlSetText [1000, format["%1",commandpointsblu1]];
+                hq_blu1 addAction ["<t color='#ff0066'>SATCOM</t>", {call PXS_startSatellite;}, "", 0, true, true, "", "_this == player"];
+                {_x addaction["<t color='#ff0066'>SATCOM</t>", {call PXS_startSatellite;}, "", 0, true, true, "", "_this == player"]} forEach (Array_of_FOBS);
+                lbSetColor [2103, 14, [0, 1, 0, 1]];
+                support_satcom_available = true;
+                playSound "loadgun";
+                ["psatcom",["Personal SATCOM display","Toggle your access to SATCOM system using the action menu"]] call bis_fnc_showNotification;
                 }
               else
-                {                  
-				  hint "Not enough command points";
-                };    
-             } 
-          else 
+                {
+                  hint "This support is already available";
+                };
+             }
+          else
              {
-				  if (CamInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
-				  commandpointsblu1 = commandpointsblu1 + 5;
-				  ctrlSetText [1000, format["%1",commandpointsblu1]];
-				  [player,Camera] call BIS_fnc_removeCommMenuItem;
-				  lbSetColor [2103, 0, [1, 0, 0, 1]];
-				  playSound "boots";
-				  support_camera_available = false;
-				  hint "Support Locked & 50% Refunded";
+               hint "Not enough command points";
              };
     };
-	
-	case 1:  
+
+	case 1:
     {
-         if (!support_supplydrop_available) then 
+         if (!support_supplydrop_available) then
              {
               if (commandpointsblu1>=10) then
                 {
@@ -49,11 +43,11 @@ switch (_index2) do
                   support_supplydrop_available = true;
                 }
               else
-                {                  
+                {
 				  hint "Not enough command points";
-                };    
-             } 
-          else 
+                };
+             }
+          else
              {
                commandpointsblu1 = commandpointsblu1 + 5;
 				  ctrlSetText [1000, format["%1",commandpointsblu1]];
@@ -67,7 +61,7 @@ switch (_index2) do
 
     case 2:
     {
-         if (!support_arty_available) then 
+         if (!support_arty_available) then
              {
               if (commandpointsblu1>=15) then
                 {
@@ -81,10 +75,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (ArtyInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			      commandpointsblu1 = commandpointsblu1 + 7.5;
@@ -99,7 +93,7 @@ switch (_index2) do
 
     case 3:
     {
-         if (!support_mortar_available) then 
+         if (!support_mortar_available) then
              {
               if (commandpointsblu1>=10) then
                 {
@@ -113,10 +107,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (MortInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 5;
@@ -131,7 +125,7 @@ switch (_index2) do
 
         case 4:
     {
-         if (!support_paradrop_available) then 
+         if (!support_paradrop_available) then
              {
               if (commandpointsblu1>=15) then
                 {
@@ -145,10 +139,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                commandpointsblu1 = commandpointsblu1 + 7.5;
 				  ctrlSetText [1000, format["%1",commandpointsblu1]];
@@ -158,11 +152,11 @@ switch (_index2) do
 				  support_paradrop_available = false;
 				  hint "Support Locked & 50% Refunded";
              };
-    }; 
-    
+    };
+
     case 5:
     {
-         if (!support_jdam_available) then 
+         if (!support_jdam_available) then
              {
               if (commandpointsblu1>=15) then
                 {
@@ -176,13 +170,13 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (JdamInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
-			   commandpointsblu1 = commandpointsblu1 + 7.5;
+			    commandpointsblu1 = commandpointsblu1 + 7.5;
 				  ctrlSetText [1000, format["%1",commandpointsblu1]];
 				  [player,jdams] call BIS_fnc_removeCommMenuItem;
 				  lbSetColor [2103, 5, [1, 0, 0, 1]];
@@ -190,11 +184,11 @@ switch (_index2) do
 				  support_jdam_available = false;
 				  hint "Support Locked & 50% Refunded";
              };
-    }; 
-    
+    };
+
     case 6:
     {
-         if (!support_armory_available) then 
+         if (!support_armory_available) then
              {
               if (commandpointsblu1>=3) then
                 {
@@ -204,30 +198,30 @@ switch (_index2) do
 				  hq_blu1 addaction ["<t color='#ff0066'>Armory 2 (VA)</t>","va.sqf", "", 0, true, true, "", "_this == player"];
 				  lbSetColor [2103, 6, [0, 1, 0, 1]];
                   support_armory_available = true;
-				  
+
 				 {_x addaction ["<t color='#ff0066'>Armory 1 (VAS)</t>","VAS\open.sqf", "", 0, true, true, "", "_this == player"]} forEach (Array_of_FOBS);
 				 {_x addaction ["<t color='#ff0066'>Armory 2 (VA)</t>","va.sqf", "", 0, true, true, "", "_this == player"]} forEach (Array_of_FOBS);
-				  
+
 				  playSound "loadgun";
 				 // publicVariable "support_armory_available";
                   ["armory",["Armory Unlocked","Access the armory at the HQ and at the dropped supply crates"]] call bis_fnc_showNotification;
-				 
-				  
+
+
                 }
               else
                 {
                   hint "Not enough command points!";
                 };
-             } 
-          else 
+             }
+          else
              {
                hint "You cannot re-lock this support for any refunds";
              };
-    };  
-    
+    };
+
     case 7:
     {
-         if (!support_PFLIR_available) then 
+         if (!support_PFLIR_available) then
              {
               if (commandpointsblu1>=12) then
                 {
@@ -244,16 +238,16 @@ switch (_index2) do
                 {
                   hint "Not enough command points!";
                 };
-             } 
-          else 
+             }
+          else
              {
                hint "You cannot re-lock this support for any refunds";
              };
     };
-    
+
     case 8:
     {
-         if (!support_uav_recon_available) then 
+         if (!support_uav_recon_available) then
              {
               if (commandpointsblu1>=15) then
                 {
@@ -267,10 +261,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (UavInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 7.5;
@@ -282,10 +276,10 @@ switch (_index2) do
 				  hint "Support Locked & 50% Refunded";
              };
     };
-    
+
     case 9:
     {
-         if (!support_veh_refit_available) then 
+         if (!support_veh_refit_available) then
              {
               if (commandpointsblu1>=5) then
                 {
@@ -295,15 +289,15 @@ switch (_index2) do
 				  vehrefit = _veh_refit;
                   lbSetColor [2103, 9, [0, 1, 0, 1]];
 				  playSound "loadgun";
-                  support_veh_refit_available = true;				  
-							 
+                  support_veh_refit_available = true;
+
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                commandpointsblu1 = commandpointsblu1 + 2.5;
 				  ctrlSetText [1000, format["%1",commandpointsblu1]];
@@ -314,10 +308,10 @@ switch (_index2) do
 				  hint "Support Locked & 50% Refunded";
              };
     };
-             
+
     case 10:
     {
-         if (!support_helotaximh9_available) then 
+         if (!support_helotaximh9_available) then
              {
               if (commandpointsblu1>=10) then
                 {
@@ -331,10 +325,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (Htaximh9InUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 5;
@@ -346,10 +340,10 @@ switch (_index2) do
 				  hint "Support Locked & 50% Refunded";
              };
     };
-	
+
 	case 11:
     {
-         if (!support_helotaxi80_available) then 
+         if (!support_helotaxi80_available) then
              {
               if (commandpointsblu1>=10) then
                 {
@@ -363,10 +357,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (Htaxi80InUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 5;
@@ -378,10 +372,10 @@ switch (_index2) do
 				  hint "Support Locked & 50% Refunded";
              };
     };
-	
+
 	case 12:
     {
-         if (!support_helotaxi290_available) then 
+         if (!support_helotaxi290_available) then
              {
               if (commandpointsblu1>=10) then
                 {
@@ -395,10 +389,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (Htaxi290InUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 5;
@@ -410,10 +404,10 @@ switch (_index2) do
 				  hint "Support Locked & 50% Refunded";
              };
     };
-    
+
     case 13:
     {
-         if (!support_cluster_available) then 
+         if (!support_cluster_available) then
              {
               if (commandpointsblu1>=15) then
                 {
@@ -427,10 +421,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (ClusterInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 7.5;
@@ -442,10 +436,10 @@ switch (_index2) do
 				  hint "Support Locked & 50% Refunded";
              };
     };
-	
+
     case 14:
     {
-         if (!support_specialized_training_available) then 
+         if (!support_specialized_training_available) then
              {
               if (commandpointsblu1>=20) then
                 {
@@ -457,22 +451,22 @@ switch (_index2) do
                   support_specialized_training_available = true;
 				  publicVariable "support_specialized_training_available";
 				  playSound "boots";
-				  publicVariable "blufor_ai_skill";				  
+				  publicVariable "blufor_ai_skill";
                 }
               else
                 {
                   hint "Not enough command points!";
                 };
-             } 
-          else 
+             }
+          else
              {
                hint "You cannot re-lock this support for any refunds";
              };
-    };	
-	
+    };
+
     case 15:
     {
-         if (!support_boattaxi_available) then 
+         if (!support_boattaxi_available) then
              {
               if (commandpointsblu1>=2) then
                 {
@@ -486,10 +480,10 @@ switch (_index2) do
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (BtaxiInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 1;
@@ -504,7 +498,7 @@ switch (_index2) do
 
 case 16:
     {
-         if (!support_halo_available) then 
+         if (!support_halo_available) then
              {
               if (commandpointsblu1>=15) then
                 {
@@ -524,8 +518,8 @@ case 16:
                 {
                   hint "Not enough command points!";
                 };
-             } 
-          else 
+             }
+          else
              {
                hint "You cannot re-lock this support for any refunds";
              };
@@ -533,7 +527,7 @@ case 16:
 
 case 17:
     {
-         if (!support_hcCAS_available) then 
+         if (!support_hcCAS_available) then
              {
               if (commandpointsblu1>=20) then
                 {
@@ -547,10 +541,10 @@ case 17:
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (CASInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 10;
@@ -565,7 +559,7 @@ case 17:
 
 case 18:
     {
-         if (!support_hcAttChop_available) then 
+         if (!support_hcAttChop_available) then
              {
               if (commandpointsblu1>=20) then
                 {
@@ -579,10 +573,10 @@ case 18:
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                if (AttChopInUse) exitWith {hint "You must wait a few minutes for item to return to 0-8 menu before re-locking it!"};
 			   commandpointsblu1 = commandpointsblu1 + 10;
@@ -597,7 +591,7 @@ case 18:
 
 case 19:
     {
-         if (!support_hcAIRTRANS_available) then 
+         if (!support_hcAIRTRANS_available) then
              {
               if (commandpointsblu1>=10) then
                 {
@@ -611,10 +605,10 @@ case 19:
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                commandpointsblu1 = commandpointsblu1 + 5;
 				  ctrlSetText [1000, format["%1",commandpointsblu1]];
@@ -628,7 +622,7 @@ case 19:
 
 case 20:
     {
-         if (!support_hcGRTRANS_available) then 
+         if (!support_hcGRTRANS_available) then
              {
               if (commandpointsblu1>=8) then
                 {
@@ -642,10 +636,10 @@ case 20:
                 }
               else
                 {
-				  hint "Not enough command points";                  
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                commandpointsblu1 = commandpointsblu1 + 4;
 				  ctrlSetText [1000, format["%1",commandpointsblu1]];
@@ -656,10 +650,10 @@ case 20:
 				  hint "Support Locked & 50% Refunded";
              };
     };
-	
+
 case 21:
     {
-         if (!support_hcBob_available) then 
+         if (!support_hcBob_available) then
              {
               if (commandpointsblu1>=25) then
                 {
@@ -672,12 +666,12 @@ case 21:
                   support_hcBob_available = true;
                 }
               else
-                {				
-				  hint "Not enough command points";                  
+                {
+				  hint "Not enough command points";
                 };
-				
-             } 
-          else 
+
+             }
+          else
              {
                commandpointsblu1 = commandpointsblu1 + 12.5;
 				  ctrlSetText [1000, format["%1",commandpointsblu1]];
@@ -687,11 +681,11 @@ case 21:
 				  support_hcBob_available = false;
 				  hint "Support Locked & 50% Refunded";
              };
-    };	
+    };
 
 case 22:
     {
-         if (!support_hcREPAIR_available) then 
+         if (!support_hcREPAIR_available) then
              {
               if (commandpointsblu1>=8) then
                 {
@@ -704,11 +698,11 @@ case 22:
                   support_hcREPAIR_available = true;
 				}
               else
-                {				
-				  hint "Not enough command points";                  
+                {
+				  hint "Not enough command points";
                 };
-             } 
-          else 
+             }
+          else
              {
                commandpointsblu1 = commandpointsblu1 + 4;
 			   ctrlSetText [1000, format["%1",commandpointsblu1]];
@@ -722,7 +716,7 @@ case 22:
 
 case 23:
     {
-         if (!support_hcREFUEL_available) then 
+         if (!support_hcREFUEL_available) then
              {
               if (commandpointsblu1>=8) then
                 {
@@ -735,8 +729,8 @@ case 23:
                   support_hcREFUEL_available = true;
                   }
 				  else
-				 {			   
-                  hint "Not enough command points";			   
+				 {
+                  hint "Not enough command points";
                  };
 		}
 		else
@@ -748,13 +742,13 @@ case 23:
 			   playSound "boots";
 			   support_hcREFUEL_available = false;
 			   hint "Support Locked & 50% Refunded";
-		};			 
-			
+		};
+
 	};
 
 case 24:
     {
-         if (zoneundercontrolblu >= 1) then 
+         if (zoneundercontrolblu >= 1) then
              {
               if (!support_FOB_available) then
                 {
@@ -776,13 +770,13 @@ case 24:
 				  support_FOB_available = false;
                   hint "Support removed from comm menu";
                 };
-             } 
-          else 
+             }
+          else
              {
                hint "Your team must control at least 1 zone";
              };
-    };  	
-	
+    };
+
 };
 
 //hint format["index: %1",_index2];
