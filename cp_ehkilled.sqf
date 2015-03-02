@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////
-// 
+//
 // cp_ehkilled.sqf
 //
 // in init.sqf: [] call compile preprocessfilelinenumbers "cp_ehkilled.sqf";
@@ -9,17 +9,17 @@
 ///////////////////////////////////////////////////
 if (isServer or isDedicated) then {
 	cp_ehkilledeast = {
-	
+
 	east_units = [];
 
 		{
 			if ((side _x) == east) then {
-			
-				east_units = east_units + [_x] - [BOMBCODE1];
-				{_x removeAllEventHandlers "killed"} forEach east_units; 
-			}; 
-		} foreach allUnits;
 
-		{_x addEventHandler ["killed", {commandpointsblu1 = commandpointsblu1 + 0.5; publicVariable "commandpointsblu1"}]} forEach east_units; 
+				east_units = east_units + [_x] - [BOMBCODE1];
+				{_x removeAllEventHandlers "killed"} forEach east_units;
+			};
+		} foreach allUnits;
+		//_cp_multiplied_reward = (0.5 * cp_reward_multiplier);
+		{_x addEventHandler ["killed", {commandpointsblu1 = commandpointsblu1 + 0.5; publicVariable "commandpointsblu1"}]} forEach east_units;
 	};
 };
