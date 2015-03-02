@@ -36,13 +36,21 @@ _trgWarning setTriggerStatements["this","[]execVM 'warninghq.sqf'", ""];
 
 
 
-// CREATE THE OFFICER
+// CREATE THE OFFICER. UGLY HACKS FOR AI MODS SUPPORT
 _group = createGroup west;
 _hq = _group createUnit ["b_officer_f",(getmarkerpos str(blu_hq_markername)), [], 0, "FORM"];
 sleep 0.2;
 _hq setformdir 240;
 sleep 1;
+_hq allowFleeing 0;
+_hq disableAI "TARGET";
+_hq disableAI "FSM";
+_hq disableAI "AUTOTARGET";
 _hq disableAI "MOVE";
+//Disable ASR for officer
+_hq setVariable ["asr_ai_exclude", true];
+//Disable VCOM for officer
+_hq setVariable ["NOAI",1,false];
 hq_blu1 = _hq;
 publicVariable "hq_blu1";
 _hq setpos [_hqblu select 0, _hqblu select 1, .59];
