@@ -2,7 +2,8 @@ _MissionPos = _this select 0;
 // define random pos AROUND TARGET. spawn markers at random.
 _radius = 300;
 _randompos = [(_missionpos select 0)+(random _radius)-(random _radius), (_missionpos select 1)+(random _radius)-(random _radius)];
-
+_cpreward = 20;
+_apreward = 20;
 // CREATE NAME
 _mission_name = MissionNameCase5;
 
@@ -54,7 +55,7 @@ str(_markername2) setMarkerAlpha 0.5;
 	  	
 
 _group = createGroup east;
-_target = _group createUnit ["O_officer_F", _missionpos, [], 0, "FORM"]; 
+_target = _group createUnit ["O_officer_F", _missionpos, [], 0, "FORM"];
 _unit = _group createUnit ["O_soldier_F", _missionpos, [], 0, "FORM"];
 _unit = _group createUnit ["O_soldier_F", _missionpos, [], 0, "FORM"];
 
@@ -76,19 +77,8 @@ deleteMarker str(_markername);
 player removeSimpleTask _taskhandle;
 
 sleep 1;
-
-// Give cookies  (bonus & notifications)
-[["TaskSucceeded",["",_mission_name]],"bis_fnc_showNotification"] call BIS_fnc_MP;
-["cpaddedmission",[20]] call bis_fnc_showNotification;
-WARCOM_blufor_ap = WARCOM_blufor_ap + 20;
-missions_success = missions_success + 1;
-commandpointsblu1 = commandpointsblu1 + 20;
-opfor_ap = opfor_ap - 20;
-publicVariable "commandpointsblu1";
-publicVariable "WARCOM_blufor_ap";
-finishedMissionsNumber = finishedMissionsNumber + 1;
-publicvariable "finishedMissionsNumber";
-_operHandler = []execVM "dialog\operative\operative_mission_complete.sqf";  
+//execute reward script
+_reward = [_cpreward, _apreward, _mission_name] execvm "missions\mission_reward.sqf";
 
 // ADD PERSISTENT STAT
 _addmission = [] execVM "persistent\persistent_stats_missions_total.sqf";

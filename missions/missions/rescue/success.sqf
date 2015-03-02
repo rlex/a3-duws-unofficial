@@ -5,7 +5,8 @@ _sol3 = _this select 3;
 _MissionPos = _this select 4;
 _markername2 = _this select 5;
 _trg = _this select 6;
-
+_cpreward = 10;
+_apreward = 15;
 
 // remove markers
 deleteMarker str(_markername2);
@@ -44,16 +45,7 @@ titleText ["Thanks for the rescue, we'll be fighting with you from now on, lead 
 sleep 5;
 
 // Give cookies  (bonus & notifications)
-finishedMissionsNumber = finishedMissionsNumber + 1;
-publicvariable "finishedMissionsNumber";
-["TaskSucceeded",["","Rescue the friendly troops"]] call bis_fnc_showNotification;
-["cpaddedmission",[10]] call bis_fnc_showNotification;
-missions_success = missions_success + 1;
-commandpointsblu1 = commandpointsblu1 + 10;
-WARCOM_blufor_ap = WARCOM_blufor_ap + 15;
-publicVariable "commandpointsblu1";
-publicVariable "WARCOM_blufor_ap";
-_operHandler = []execVM "dialog\operative\operative_mission_complete.sqf"; 
+[_cpreward, _apreward] execvm "missions\mission_reward.sqf";
 
 // ADD PERSISTENT STAT
 _addmission = [] execVM "persistent\persistent_stats_missions_total.sqf";

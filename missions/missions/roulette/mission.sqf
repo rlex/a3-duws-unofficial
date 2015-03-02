@@ -1,4 +1,5 @@
-
+_cpreward = 200;
+_apreward = 30;
 _exiting = false;
 if (!isNil "GORGON1") then
 {
@@ -119,17 +120,9 @@ player removeSimpleTask _taskhandle;
 if (DEFUSED) then {
 
 sleep 2;
-[["TaskSucceeded",["",_mission_name]],"bis_fnc_showNotification"] call BIS_fnc_MP;
-["cpaddedmission",[200]] call bis_fnc_showNotification;
-commandpointsblu1 = commandpointsblu1 + 200;
-missions_success = missions_success + 1;
-WARCOM_blufor_ap = WARCOM_blufor_ap + 30;
-opfor_ap = opfor_ap - 30;
-finishedMissionsNumber = finishedMissionsNumber + 1;
-publicvariable "finishedMissionsNumber";
-publicVariable "commandpointsblu1";
-publicVariable "WARCOM_blufor_ap";
-_operHandler = []execVM "dialog\operative\operative_mission_complete.sqf";
+// Give cookies  (bonus & notifications)
+[_cpreward, _apreward] execvm "missions\mission_reward.sqf";
+
 sleep 1;
 deleteVehicle BOMBCODE1;
 removeAllActions GORGON1;

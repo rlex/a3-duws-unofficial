@@ -2,9 +2,9 @@ _MissionPos = _this select 0;
 // define random pos AROUND SOLDIERS. spawn markers at random.
 _radius = 200;
 _randompos = [(_missionpos select 0)+(random _radius)-(random _radius), (_missionpos select 1)+(random _radius)-(random _radius)];
-
 _initpos = getpos hq_blu1;
-
+_cpreward = 25;
+_apreward = 25;
 // CREATE NAME
 _mission_name = MissionNameCase4;
 
@@ -80,17 +80,7 @@ if (getdammage _truck1>0.95) exitWith
 hint "Unloading the truck...";
  
 // Give cookies  (bonus & notifications)
-["TaskSucceeded",["",_mission_name]] call bis_fnc_showNotification;
-["cpaddedmission",[25]] call bis_fnc_showNotification;
-missions_success = missions_success + 1;
-commandpointsblu1 = commandpointsblu1 + 25;
-WARCOM_blufor_ap = WARCOM_blufor_ap + 25;
-opfor_ap = opfor_ap - 25;
-publicVariable "commandpointsblu1";
-publicVariable "WARCOM_blufor_ap";
-finishedMissionsNumber = finishedMissionsNumber + 1;
-publicvariable "finishedMissionsNumber";
-_operHandler = []execVM "dialog\operative\operative_mission_complete.sqf"; 
+[_cpreward, _apreward] execvm "missions\mission_reward.sqf";
 
 // ADD PERSISTENT STAT
 _addmission = [] execVM "persistent\persistent_stats_missions_total.sqf";

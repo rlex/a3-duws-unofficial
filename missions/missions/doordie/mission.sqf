@@ -1,8 +1,9 @@
 //0= {_x setpos [getpos hq_blu1 select 0, (getpos hq_blu1 select 1)+20];} forEach units _bombcode1;/////////////////////////////////////////////////////////////
 
+_cpreward = 250;
+_apreward = 35;
 
 [[{[]execVM "missions\missions\doordie\timer.sqf"}],"BIS_fnc_Spawn",true,false] call BIS_fnc_MP;
-
 
 _MissionPos = _this select 0;
 // define random pos AROUND SOLDIERS. spawn markers at random.
@@ -116,17 +117,8 @@ player removeSimpleTask _taskhandle;
 if (DEFUSED) then {
 
 sleep 2;
-["TaskSucceeded",["",_mission_name]] call bis_fnc_showNotification;
-["cpaddedmission",[250]] call bis_fnc_showNotification;
-commandpointsblu1 = commandpointsblu1 + 250;
-missions_success = missions_success + 1;
-WARCOM_blufor_ap = WARCOM_blufor_ap + 30;
-opfor_ap = opfor_ap - 30;
-finishedMissionsNumber = finishedMissionsNumber + 1;
-publicvariable "finishedMissionsNumber";
-publicVariable "commandpointsblu1";
-publicVariable "WARCOM_blufor_ap";
-_operHandler = []execVM "dialog\operative\operative_mission_complete.sqf";
+// Give cookies  (bonus & notifications)
+[_cpreward, _apreward] execvm "missions\mission_reward.sqf";
 sleep 1;
 deleteVehicle BOMBCODE1;
 [[{hq_blu1 removeaction KEYPAD1}], "BIS_fnc_Spawn",true] call BIS_fnc_MP;

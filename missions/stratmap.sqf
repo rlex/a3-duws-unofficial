@@ -10,7 +10,7 @@ if (officedead) exitWith {hint "Your commanding officer is dead, so there are no
 startLoadingScreen ["Loading zones..."];
 _kibot_pos_array_missionPos = [[-99999,-99999,-99999]];
 
-while {_counter < 9;} do {
+while {_counter < 12;} do {
 _foundSafePos = [center_of_map, 0,half_of_map,5,0,0.1,0] call BIS_fnc_findSafePos;
 
 _array_exist = true;
@@ -214,33 +214,70 @@ if (_found_dist_away) then {};
         ];
         _array_of_missions = _array_of_missions + [_missionArray];
     };
-	
-		
-	};
+
+    case 9: // mission ARMORY
+    {
+        //add the mission into the strat map
+        _radius = 300;
+        MissionNameCase9 = [0] call compile preprocessFile "random_name.sqf";
+        PosOfCase9Mission = _foundSafepos;
+
+        _missionArray = [[(_foundSafepos select 0)+(random _radius)-(random _radius),(_foundSafepos select 1)+(random _radius)-(random _radius)],
+        {_handle = [PosOfCase9Mission] execVM "missions\missions\armory\mission.sqf"; _handle = execVM "missions\missionTimer.sqf"},
+        MissionNameCase9,
+        "Recover mobile armory",
+        "",
+        "\a3\ui_f\data\gui\cfg\hints\Annoucning_ca.paa",
+        1,
+        []
+        ];
+        _array_of_missions = _array_of_missions + [_missionArray];
+    };
+
+    case 10: // mission TRANSPORTHELI
+    {
+        //add the mission into the strat map
+        _radius = 300;
+        MissionNameCase10 = [0] call compile preprocessFile "random_name.sqf";
+        PosOfCase10Mission = _foundSafepos;
+
+        _missionArray = [[(_foundSafepos select 0)+(random _radius)-(random _radius),(_foundSafepos select 1)+(random _radius)-(random _radius)],
+        {_handle = [PosOfCase10Mission] execVM "missions\missions\transportheli\mission.sqf"; _handle = execVM "missions\missionTimer.sqf"},
+        MissionNameCase10,
+        "Recover transport helicopter",
+        "",
+        "\a3\ui_f\data\gui\cfg\hints\Annoucning_ca.paa",
+        1,
+        []
+        ];
+        _array_of_missions = _array_of_missions + [_missionArray];
+    };
+
+    case 11: // mission build
+    {
+        //add the mission into the strat map
+        _radius = 300;
+        MissionNameCase11 = [0] call compile preprocessFile "random_name.sqf";
+        PosOfCase11Mission = _foundSafepos;
+
+        _missionArray = [[(_foundSafepos select 0)+(random _radius)-(random _radius),(_foundSafepos select 1)+(random _radius)-(random _radius)],
+        {_handle = [PosOfCase11Mission] execVM "missions\missions\builder\mission.sqf"; _handle = execVM "missions\missionTimer.sqf"},
+        MissionNameCase11,
+        "Recover builder vehicle",
+        "",
+        "\a3\ui_f\data\gui\cfg\hints\Annoucning_ca.paa",
+        1,
+        []
+        ];
+        _array_of_missions = _array_of_missions + [_missionArray];
+    };
+
+    };
     _counter = _counter + 1;
     _kibot_pos_array_missionPos = _kibot_pos_array_missionPos + [_foundSafePos];
     };
- 
- 
- };    
-
-
-
-
-
-
-
-
-
+};
 endLoadingScreen;
-
-
-
-
-
-
-
-
 
 // -------****- NOW OPEN THE MAP
 
